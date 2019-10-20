@@ -1,6 +1,9 @@
 <mat-card>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Title" [(ngModel)]="enteredTitle">
+  </mat-form-field>
 <mat-form-field class="example-full-width">
-    <textarea  matInput placeholder="Leave a message..."  [(ngModel)]="enteredValue"></textarea>
+    <textarea  matInput placeholder="Leave a message..."  [(ngModel)]="enteredContent"></textarea>
 </mat-form-field>
 <button mat-raised-button color="primary" (click)="onAddPost()">Save post</button>
 </mat-card>

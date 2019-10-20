@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'node-app';
+  posts = []
+
+  constructor(){}
+
+  receiveMessage($event) {
+    this.posts.push($event);
+  }
+
 }
