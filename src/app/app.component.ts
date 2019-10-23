@@ -8,12 +8,8 @@ import { Post } from './posts/post.model';
 })
 export class AppComponent {
   title = 'node-app';
-  posts: Post[] = []
 
   constructor(){}
 
-  receiveMessage($event) {
-    this.posts.push($event);
-  }
 
 }
