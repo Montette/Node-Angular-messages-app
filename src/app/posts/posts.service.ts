@@ -13,9 +13,14 @@ export class PostsService {
     return this.postsUpdated.asObservable();
   }
 
-  addPost(title: string, content: string) {
-    const post = {title, content};
+  addPost(title: string, content: string, id: number) {
+    const post = {title, content, id};
     this.posts.push(post);
+    this.postsUpdated.next([...this.posts]);
+  }
+
+  removePost(removingPost: Post) {
+    this.posts = this.posts.filter(post => post.id !== removingPost.id);
     this.postsUpdated.next([...this.posts]);
   }
 }
