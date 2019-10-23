@@ -10,7 +10,7 @@ import { PostsService } from '../posts.service';
 })
 export class PostListComponent implements OnInit, OnDestroy {
 
-  posts: Post[];
+  posts: Post[] = [];
   subscription: Subscription;
 
   constructor(public postsService: PostsService) {}
@@ -22,7 +22,8 @@ export class PostListComponent implements OnInit, OnDestroy {
           this.posts = posts;
         }
       );
-    this.posts = this.postsService.getPosts();
+    this.postsService.getPosts();
+
   }
 
   ngOnDestroy() {
