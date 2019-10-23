@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { PostSingleComponent } from './posts/post-single/post-single.component';
+import { PostsService } from './posts/posts.service';
 
 
 
@@ -30,7 +31,9 @@ import { PostSingleComponent } from './posts/post-single/post-single.component';
     MatToolbarModule,
     MatExpansionModule
   ],
-  providers: [],
+  providers: [
+    PostsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
