@@ -52,4 +52,21 @@ constructor(private http: HttpClient){}
       })
 
   }
+
+  getPost(postId: string) {
+      return this.http.get<{post: {_id: string, title: string, content: string}}>(`http://localhost:3000/api/posts/${postId}`)
+}
+
+  editPost(title: string, content: string, id: string) {
+    const post = {title, content, id};
+    this.http.put<any>(`http://localhost:3000/api/posts/${id}`, post)
+    .subscribe((response)=> {
+        const posts = [...this.posts];
+        const postIndex = posts.findIndex(post => post.id === id);
+        posts[postIndex] = post;
+        this.posts = posts;
+        this.postsUpdated.next([...this.posts]);
+
+    })
+  }
 }
