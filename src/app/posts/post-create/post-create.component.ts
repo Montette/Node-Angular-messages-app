@@ -17,6 +17,7 @@ export class PostCreateComponent implements OnInit {
   private mode = 'create';
   private postId: string;
   post: Post;
+  showSpinner: boolean = false;
 
   constructor(public postsService: PostsService, public route: ActivatedRoute) { }
 
@@ -26,11 +27,11 @@ export class PostCreateComponent implements OnInit {
       if(paramMap.has('postId')) {
         this.mode = 'edit';
         this.postId = paramMap.get('postId');
+        this.showSpinner = true;
         this.postsService.getPost(this.postId).subscribe(data => {
-          console.log(data);
-          this.post = {id: data.post._id, title: data.post.title, content: data.post.content}
+          this.showSpinner = false;
+          this.post = {id: data._id, title: data.title, content: data.content}
         })
-         console.log(this.post);
 
       } else {
         this.mode = 'create';
