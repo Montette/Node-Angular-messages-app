@@ -18,7 +18,8 @@ constructor(private http: HttpClient, private router: Router){}
         return {
           title: post.title,
           content: post.content,
-          id: post._id
+          id: post._id,
+          imagePath: post.imagePath
         }
       })
     }))
@@ -33,14 +34,19 @@ constructor(private http: HttpClient, private router: Router){}
     return this.postsUpdated.asObservable();
   }
 
-  addPost(title: string, content: string) {
-    const post = {title, content, id: null};
-    this.http.post<any>('http://localhost:3000/api/posts', post)
+  addPost(title: string, content: string, image: File) {
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('image', image, title);
+
+    this.http
+      .post<any>('http://localhost:3000/api/posts', formData)
       .subscribe((response)=> {
-        console.log(response);
-        post.id = response.post._id;
+        const post = {title, content, id: response.postId, imagePath: response.imagePath};
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
+        console.log(response)
         this.router.navigate(['/']);
       })
 
@@ -57,16 +63,31 @@ constructor(private http: HttpClient, private router: Router){}
   }
 
   getPost(postId: string) {
-      return this.http.get<{_id: string, title: string, content: string}>(`http://localhost:3000/api/posts/${postId}`)
+      return this.http.get<{_id: string, title: string, content: string, imagePath: string}>(`http://localhost:3000/api/posts/${postId}`)
 }
 
-  editPost(title: string, content: string, id: string) {
-    const post = {title, content, id};
-    this.http.put<any>(`http://localhost:3000/api/posts/${id}`, post)
+  editPost(title: string, content: string, id: string, image: File | string) {
+    let postData;
+    if (typeof image === "object") {
+      postData = new FormData();
+      postData.append("id", id);
+      postData.append("title", title);
+      postData.append("content", content);
+      postData.append("image", image, title);
+    } else {
+      postData = {
+        id: id,
+        title: title,
+        content: content,
+        imagePath: image
+      };
+    }
+    // const post = {title, content, id, image};
+    this.http.put<any>(`http://localhost:3000/api/posts/${id}`, postData)
     .subscribe((response)=> {
         const posts = [...this.posts];
         const postIndex = posts.findIndex(post => post.id === id);
-        posts[postIndex] = post;
+        posts[postIndex] = postData;
         this.posts = posts;
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);

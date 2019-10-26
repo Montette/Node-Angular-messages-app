@@ -10,6 +10,10 @@ const postSchema = new Schema({
     type: String,
     required: true
   },
+  imagePath: {
+    type: String,
+    required: false
+  },
 
 });
 

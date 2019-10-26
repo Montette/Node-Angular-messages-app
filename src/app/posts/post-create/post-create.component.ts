@@ -44,11 +44,14 @@ export class PostCreateComponent implements OnInit {
         this.showSpinner = true;
         this.postsService.getPost(this.postId).subscribe(data => {
           this.showSpinner = false;
-          this.post = {id: data._id, title: data.title, content: data.content};
+          this.post = {id: data._id, title: data.title, content: data.content, imagePath: data.imagePath};
+          this.imagePreview = data.imagePath;
           this.form.setValue({
             'title': this.post.title,
-            'content': this.post.content
-          })
+            'content': this.post.content,
+            'image': this.post.imagePath
+          });
+          console.log(this.form);
         })
 
       } else {
@@ -64,9 +67,9 @@ export class PostCreateComponent implements OnInit {
       return;
     }
     if(this.postId) {
-      this.postsService.editPost(this.form.value.title, this.form.value.content, this.postId);
+      this.postsService.editPost(this.form.value.title, this.form.value.content, this.postId, this.form.value.image);
     } else {
-      this.postsService.addPost(this.form.value.title, this.form.value.content);
+      this.postsService.addPost(this.form.value.title, this.form.value.content, this.form.value.image);
     }
 
   this.form.reset();
